@@ -4,7 +4,7 @@ Chủ đề: Hỏi đáp trên ảnh tài liệu (Document VQA) — OLP AI PTIT 
 Người thực hiện: **Huỳnh Thuyên Nam** — Module 4, khóa AIO2026 (AI VIET NAM), Topic Team
 Kỳ báo cáo: **Tuần 4 (WEEK04)** — tuần hoàn thiện output, mốc cuối trong bảng kế hoạch ở Outline mục V
 
-**Mã nguồn:** https://github.com/AIVIETNAM-AIO-namht/docvqa-baseline-to-ablation
+**Mã nguồn:** https://github.com/CapyAura/docvqa-baseline-to-ablation
 Toàn bộ số liệu trong báo cáo này truy vết được về script cụ thể — bảng ánh xạ ở §6.
 
 Mốc đã hứa cho Tuần 4 trong Outline: *"Chuẩn hóa mã nguồn & Truy vết số liệu. Viết Draft Paper báo cáo công trình. Đóng gói nộp TA."*
@@ -275,7 +275,7 @@ Yêu cầu: Python 3.10+ · `numpy`, `Pillow` · `scikit-learn` (chỉ cho pha `
 
 ## 8. Nguồn
 
-- Mã nguồn: https://github.com/AIVIETNAM-AIO-namht/docvqa-baseline-to-ablation
+- Mã nguồn: https://github.com/CapyAura/docvqa-baseline-to-ablation
 - Nhật ký công việc đầy đủ theo tuần: `Slot 1/Working Files/PROGRESS_LOG.md`
 - Đề bài: `Slot 1/Working Files/reference/exam_question_docvqa.md`
 - Hướng dẫn Topic Team: `Slot 1/Working Files/reference/guide_extract.txt`
