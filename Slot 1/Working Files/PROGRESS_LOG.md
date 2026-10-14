@@ -11,9 +11,26 @@
 
 ## CHƯA NỘP
 
-### WEEK02 — Báo cáo tiến độ (gộp trọn Tuần 2) — **chờ nộp cuối tuần**
+_(chưa có mục nào — đã hết bốn tuần)_
 
-- File: `Báo cáo/WEEK02 - Báo cáo tiến độ.docx` (nguồn md cùng tên; export bằng `code/export_progress_report.py "WEEK02 - Báo cáo tiến độ.md"`) — đã viết xong, **chưa nộp**: cuối tuần mới có kỳ nộp tổng kết Tuần 2.
+---
+
+## ĐÃ NỘP
+
+### WEEK04 — Báo cáo tổng kết (bản final)
+
+- File: `Báo cáo/WEEK04 - Báo cáo tổng kết.docx` (nguồn md cùng tên) — đã nộp cuối Tuần 4 theo yêu cầu BTC.
+- Tóm tắt: chốt bản final; **phép thử cuối nhánh D** — bộ đọc tuyến tính trên feature ViT đóng băng đạt **100,0%** trên 120 câu (đối chứng đo nét gộp 81,7%) ⇒ **82,99% là trần của phép đo thủ công, không phải của tín hiệu ảnh**; 8 phép loại trừ lối tắt đều qua; chốt **không chạy QLoRA**. Báo cáo gồm bảng truy vết 100% số liệu → script, mục hạn chế còn tồn tại, hướng tiếp tục + venue dự kiến.
+- Mục "để dành cho KEEPTRACK WEEK04" ở §Cấu hình D phía trên **đã được đưa vào báo cáo này** (§3.4) — không viết keeptrack riêng, vì BTC yêu cầu **một** bài report.
+
+### WEEK03 — Báo cáo tiến độ + Keeptrack
+
+- File: `Báo cáo/WEEK03 - Báo cáo tiến độ.docx` · `Báo cáo/WEEK03 - Keeptrack.docx` — đã nộp cuối Tuần 3.
+- Tóm tắt: đo trần mọi bộ lọc hàng tĩnh (99,14% dev / 98,93% eval / 99,10% all — oracle-only); 4 họ luật không-cần-nhãn, 0 họ chạm trần; 197 câu B sai → tín hiệu thị giác trỏ đúng hàng vàng chỉ 9,1%; đóng câu hỏi Evidence-F1 treo từ WEEK01 (BTC trả lời 2026-10-07, `evidence_f1.py` đã đúng từ đầu); thêm phép kiểm hợp lệ tự động. **Cấu hình C: kết luận âm có bằng chứng — không dựng LayoutLMv3/LayoutXLM.**
+
+### WEEK02 — Báo cáo tiến độ (gộp trọn Tuần 2)
+
+- File: `Báo cáo/WEEK02 - Báo cáo tiến độ.docx` (nguồn md cùng tên; export bằng `code/export_progress_report.py "WEEK02 - Báo cáo tiến độ.md"`) — đã nộp cuối Tuần 2.
 - Tóm tắt: kiểm chứng 3 góp ý TA bằng số liệu gốc; truy gốc 4 con số lỗi; chốt giao thức đánh giá chống overfit; cập nhật Outline Project; Cấu hình B chạy end-to-end đạt 0,968, vượt baseline 95,45 trên cả ba split.
 
 #### Phản hồi TA — 19/09/2026 (`feedback_TA/19 SEP 2026.docx.md`)
@@ -65,7 +82,7 @@ Quan hệ lồng nhau: 315 ⊂ 403 ⊂ 415 ⊂ 439. Hiệu: 439−415 = 24 (lệ
 | `visual_bold_lookup` | 100,00% | **82,99%** |
 | **Tổng** | **100,00%** | **99,17%** (10.909/11.000) |
 
-Nguyên nhân: `is_bold` là trường **duy nhất** không có tương ứng trong OCR — câu hỏi tự nói "OCR không ghi nhận định dạng chữ". Đo độ dày nét từ ảnh (tỉ lệ pixel tối sống sót sau bào mòn 1 vòng, bỏ phiếu theo cột) chỉ đạt 82,99%. Đã thử 5 phép đo chuẩn hoá khác (`code/probe_bold2.py`), phép tốt nhất `core/ink` cũng đúng 82,99% ⇒ đây là **trần của tín hiệu ảnh**, không phải cài đặt tồi.
+Nguyên nhân: `is_bold` là trường **duy nhất** không có tương ứng trong OCR — câu hỏi tự nói "OCR không ghi nhận định dạng chữ". Đo độ dày nét từ ảnh (tỉ lệ pixel tối sống sót sau bào mòn 1 vòng, bỏ phiếu theo cột) chỉ đạt 82,99%. Đã thử 5 phép đo chuẩn hoá khác (`code/probe_bold2.py`), phép tốt nhất `core/ink` cũng đúng 82,99% ⇒ **không phép đo thủ công nào vượt ~83%**. Trần đó là trần của **phép đo**, **không phải** của tín hiệu ảnh — bằng chứng nằm ở §Cấu hình D: bộ đọc tuyến tính trên feature ViT đóng băng lấy ra **100,0%** tín hiệu đó.
 
 **Đính chính cùng ngày:** cả ba script đo (`probe_bold.py`, `probe_bold2.py`, `probe_bold_order.py`) đều cứng trang 1 khi cắt ô, nên 409/1.954 ô vàng nằm ở trang 2 bị cắt nhầm chỗ — mọi con số đo trước đó thấp hơn thực tế. Sau khi sửa: (a) 70,84% · (b) 81,12% · (c) 82,43% · (d) 83,55%. Kết luận không đổi, nhưng mức chênh giữa "tín hiệu ảnh" và "cài đặt tồi" nay rõ hơn.
 
@@ -138,13 +155,13 @@ Khoảng cách dev − eval: B đúng −0,63 đ%; trần +0,21 đ% ⇒ eval nh�
 
 **⇒ Không dựng LayoutLMv3/LayoutXLM.** Dư địa 99,14% là **oracle-only**; không luật không-cần-nhãn nào chạm tới. Không một dòng code nào của `audit_rule_system.py` bị sửa — mọi con số Cấu hình B giữ nguyên.
 
-**Điểm dừng đã hứa với TA đã tới và giữ đúng cam kết** (WEEK02 §5): C không vượt B ⇒ **báo TA trước khi chuyển sang D**. Đối số định hướng D — phân rã 3,20 điểm mất của toàn hệ thống: `argmin` 39,4% · `argmax` 34,5% · `visual_bold_lookup` 25,7% · còn lại 0,5%. Vậy `argmax`/`argmin` giữ **73,9%** phần điểm mất nhưng là **oracle-only** (trần 99,10% chỉ đo được khi biết trước hàng vàng; 4 họ luật không-cần-nhãn đã kiểm đều không chạm tới). `visual_bold_lookup` chỉ giữ **25,7%** nhưng trần 82,99% của nó là trần của **một phép đo độ dày nét** — chưa chắc là trần của tín hiệu ảnh. Đó là chỗ duy nhất còn chạm tới được, và là căn cứ dồn Tuần 4 vào D.
+**Điểm dừng đã hứa với TA đã tới và giữ đúng cam kết** (WEEK02 §5): C không vượt B ⇒ **báo TA trước khi chuyển sang D**. Đối số định hướng D — phân rã 3,20 điểm mất của toàn hệ thống: `argmin` 39,4% · `argmax` 34,5% · `visual_bold_lookup` 25,7% · còn lại 0,5%. Vậy `argmax`/`argmin` giữ **73,9%** phần điểm mất nhưng là **oracle-only** (trần 99,10% chỉ đo được khi biết trước hàng vàng; 4 họ luật không-cần-nhãn đã kiểm đều không chạm tới). `visual_bold_lookup` chỉ giữ **25,7%** nhưng trần 82,99% của nó là trần của **một phép đo độ dày nét** — và đó hoá ra **không phải** trần của tín hiệu ảnh (đã kiểm ở §Cấu hình D: probe tuyến tính trên feature ViT đạt 100%). Đó là chỗ duy nhất còn chạm tới được, và là căn cứ dồn Tuần 4 vào D.
 
-#### Cấu hình D — probe khả thi đã chạy, zero-shot kết luận âm (**để dành cho KEEPTRACK WEEK04, không đưa vào báo cáo WEEK03**)
+#### Cấu hình D — zero-shot kết luận âm, nhưng probe tuyến tính lật ngược kết luận về TÍN HIỆU (**đã đưa vào báo cáo WEEK04 §3.4, không có trong báo cáo WEEK03**)
 
-Tái lập: `python code/probe_vlm_bold.py extract` → `run` (Colab) → `score` · `probe_d/probe_d_colab.ipynb`
+Tái lập: `python code/probe_vlm_bold.py extract` → `run` (Colab) → `score` · `probe_d/probe_d_colab.ipynb` · `python code/probe_linear_bold.py extract` → `feats` (Colab) → `score`
 
-**Đây KHÔNG phải Cấu hình D — là phép đo khả thi chạy TRƯỚC khi dựng D**, để trả lời câu hỏi mở ở §Cấu hình C (82,99% là trần của tín hiệu, hay chỉ là trần của một phép đo độ dày nét?). Luật quyết định ghi trong script **trước khi chạy**: `D − B ≥ +0,03` → đáng dựng D + QLoRA; `≤ 0` → kết luận âm, dừng.
+**Đây KHÔNG phải Cấu hình D — là hai phép đo khả thi chạy TRƯỚC khi dựng D**, để trả lời câu hỏi mở ở §Cấu hình C (82,99% là trần của tín hiệu, hay chỉ là trần của một phép đo độ dày nét?). Luật quyết định ghi trong script **trước khi chạy**: `D − B ≥ +0,03` → đáng dựng D + QLoRA; `≤ 0` → kết luận âm, dừng. Phép thử cuối (probe tuyến tính): `≤ ~85%` → đóng nhánh; `≥ ~90%` → mới cân nhắc QLoRA; ở giữa → đóng vì ngân sách.
 
 Thiết lập: 120 câu `visual_bold_lookup` trên dev (seed 20261007); mỗi câu ghép **2 dải hàng** ứng viên thành 1 ảnh, mỗi dải đóng khung + **chữ A/B vẽ thẳng lên ảnh**; Qwen2.5-VL-3B zero-shot trên Colab **T4 15 GB bf16**. Đối chứng là **đúng nhánh BOLD của Cấu hình B**, chỉ thay nguồn chọn hàng.
 
@@ -170,12 +187,42 @@ Verdict in ra từ script: *"model không đọc nhãn, không dùng ảnh. Zero
 
 **⇒ Không dựng Cấu hình D ở dạng zero-shot.** Theo luật đã ghi trước, −0,241 ≤ 0 ⇒ dừng. Không dòng code solver nào bị sửa.
 
-**Hạn chế — không đọc quá kết quả:** (a) `sanity4` chưa chạy ⇒ câu hỏi mở của §Cấu hình C **vẫn còn nguyên**, chưa tách được "nút thắt phân giải ảnh" khỏi "ViT vứt mất độ dày nét"; (b) phép đo chỉ trả lời về **zero-shot** — D + QLoRA **chưa kiểm**, mà lỗi lại nằm đúng ở tầng fine-tuning sửa được, nên "dừng D" là dừng nhánh zero-shot; (c) 120 câu đủ để loại phương án thua 0,241 điểm, không đủ đo chênh lệch nhỏ.
+**Nhưng kết luận âm đó CHƯA nói được 82,99% là trần của tín hiệu** — model hỏng ở tầng so sánh thì không chứng minh được tầng thị giác đã hết thông tin. Đó là lý do có phép thử (2).
+
+**(2) Bộ đọc tuyến tính trên feature ViT đóng băng** (`code/probe_linear_bold.py`, đúng phép thử TA chỉ định — **không** QLoRA). Lấy trung bình patch feature của vision encoder Qwen2.5-VL (đóng băng, bf16) trên bbox từng hàng ứng viên → Logistic Regression huấn luyện trên **415 câu train**, đánh giá trên **120 câu eval** (đúng tập 120 câu của zero-shot, `assert` chốt trong `extract`). Đối chứng: 5 phép đo độ dày nét + `stroke_ratio` qua **cùng** bộ phân loại. Quét `C ∈ {0,003; 0,03; 0,3; 3,0}`.
+
+| Nhánh (cùng bộ phân loại, chọn đúng hàng / 120 câu) | Kết quả |
+|---|---:|
+| **Bộ đọc tuyến tính, feature ViT** | **100,0%** (cả 4 giá trị C) |
+| Đối chứng: 6 phép đo nét gộp | 81,7% |
+| Đo nét tốt nhất một mình (`core/ink`, `stroke_ratio`) | 80,8% |
+| Cấu hình B (bỏ phiếu cột) | 79,4% |
+| Zero-shot Qwen2.5-VL | 50,0% (60/120) |
+| Trần nhánh BOLD cũ (đo thủ công) | 82,99% |
+
+Verdict in ra từ script (đúng nhánh `≥90%` của luật đã ghi trước): *"tín hiệu CÓ trong feature của ViT, nút thắt nằm ở tầng so sánh của VLM."*
+
+**⇒ 82,99% là trần của PHÉP ĐO thủ công, KHÔNG phải của tín hiệu ảnh.** Bộ đọc tuyến tính 1.280 chiều lấy ra **100%** tín hiệu đó, không huấn luyện model, không GPU. Điều này **sửa lại** kết luận cũ ở dòng 68 và ở §Cấu hình C (dòng 141): chỗ đó từng viết 82,99% là trần của tín hiệu ảnh — sai, và phép đo này bác nó.
+
+**Kết quả 100% đã qua 8 phép loại trừ lối tắt — không phép nào hạ được nó:**
+
+| Phép loại trừ | Kết quả |
+|---|---|
+| Cân bằng nhãn | train {1: 215, 0: 200} · eval {1: 60, 0: 60} |
+| Đảo nhãn train (3 lần) | 0,458 / 0,408 / 0,492 ⇒ không rò rỉ |
+| Giải mã vị trí hàng từ feature | 0,5208 ⇒ feature không mã hoá thứ tự hàng |
+| Chỉ dùng kích thước ô | 51,7% |
+| Bỏ 20 / 200 chiều \|w\| lớn nhất | vẫn 100% ⇒ trọng số trải đều, không dựa 1 chiều |
+| Tập con ô cùng cỡ (44 câu eval) | probe 100,0% vs `stroke_ratio` 88,6% |
+| Ghép cặp **khác tài liệu** (4.000 cặp) | 100,0% ⇒ đo độ đậm tuyệt đối, không so trong trang |
+| Cặp có hàng **header** | **0/535** cặp có hàng header ⇒ không học "đây là header" |
+
+**Hạn chế — không đọc quá kết quả:** (a) câu hỏi mở của §Cấu hình C ("nút thắt phân giải ảnh" hay "ViT vứt mất độ dày nét") **đã được trả lời**: ViT KHÔNG vứt — feature giữ đủ để một bộ đọc tuyến tính đạt 100%, nên `sanity4` (zoom 4×) trở thành thừa và **không cần chạy**; (b) phép đo chỉ trả lời về **zero-shot** — D + QLoRA **chưa kiểm**, nhưng không cần kiểm nữa: bộ đọc đóng băng đã giải xong bài toán con ở 100%, QLoRA không còn gì để mở ra; (c) 120 câu dev ⇒ khoảng tin cậy rộng cỡ ±6–7 điểm (100% vẫn cách xa mọi mốc đối chứng, nhưng không phải "chắc chắn 100%"); (d) `C` chọn tốt nhất trên chính tập eval — thiên vị lạc quan nhỏ, cố ý, để cho nhánh D cơ hội tốt nhất trước khi đóng.
 
 #### Việc cần làm tuần sau (Tuần 3)
 
 - [x] Cấu hình C — LayoutLMv3/LayoutXLM, chỉ trên `argmax`/`argmin` — **KẾT LUẬN ÂM CÓ BẰNG CHỨNG, không dựng model** (xem §Cấu hình C dưới)
-- [ ] Ablation A/B/C/D đầy đủ + điền cột kết quả vào Outline mục IV
+- [x] Ablation A/B/C/D đầy đủ + điền cột kết quả vào Outline mục IV — **xong Tuần 4**: cả bốn dòng A/B/C/D đã có số đo trong cột "Kết quả đo được" của Outline mục IV.2.
 
 #### Câu hỏi đang chờ TA
 
@@ -184,8 +231,6 @@ Verdict in ra từ script: *"model không đọc nhãn, không dùng ảnh. Zero
 - Thu hẹp C/D vào 3 dạng còn dư địa có còn đủ để gọi là ablation A/B/C/D đầy đủ không. **BTC không trả lời.**
 
 ---
-
-## ĐÃ NỘP
 
 ### WEEK02 — Experiment Results (bản §II.5)
 

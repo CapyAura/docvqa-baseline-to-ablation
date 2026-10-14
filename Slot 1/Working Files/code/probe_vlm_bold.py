@@ -803,7 +803,8 @@ def cmd_sanity3(args):
           "  ĐẢO DẢI lật  + ĐỔI NHÃN đứng -> model đọc nhãn trong ảnh, so được nét,\n"
           "                                  nhưng nghiêng về vị trí. Lỗi ở harness.\n"
           "  ĐẢO DẢI đứng + ĐỔI NHÃN đứng -> model không đọc nhãn, không dùng ảnh.\n"
-          "                                  Zero-shot vô dụng; QLoRA là đường duy nhất.\n"
+          "                                  Zero-shot vô dụng; nhưng probe tuyến tính trên\n"
+          "                                  ViT đóng băng vẫn đọc ra tín hiệu ở 100% (README §D).\n"
           "  ĐỔI NHÃN lật                 -> model đọc nhãn và so được nét. Tốt nhất.",
           flush=True)
 

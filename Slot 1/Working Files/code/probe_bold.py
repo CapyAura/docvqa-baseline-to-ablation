@@ -11,7 +11,9 @@
 
 Kết quả: (a) 70,84% · (b) 81,12% · (c) 82,43% · (d) 83,55% — và (d) khớp với
 con số harness đo được (82,99%), chênh 0,6 điểm do harness dựng hàng từ OCR còn
-đây dựng từ chính ô evidence. Không cách nào vượt ~84% ⇒ trần của tín hiệu ảnh.
+đây dựng từ chính ô evidence. Không cách nào vượt ~84% ⇒ trần của PHÉP ĐO thủ
+công, KHÔNG phải của tín hiệu ảnh — `probe_linear_bold.py` lấy ra 100,0% tín
+hiệu đó từ feature ViT đóng băng, qua CÙNG bộ phân loại.
 
     python probe_bold.py
 """

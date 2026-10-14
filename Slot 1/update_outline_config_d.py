@@ -1,8 +1,10 @@
 """Cập nhật ô "Cấu hình D" trong Outline §IV từ "chưa chạy" -> kết quả probe.
 
-Chạy 1 lần. Backup tự động sang `.BACKUP-08-10.docx` trước khi sửa.
+ponytail: ĐÃ CHẠY XONG 08/10 — KHÔNG chạy lại được nữa. `OLD = "chưa chạy"` không
+còn khớp ô nào trong Outline, nên `assert len(hits) == 1` sẽ nổ và bản đang dùng
+sẽ bị ghi đè bằng bản cũ. Giữ đây làm bản ghi lịch sử.
 
-    python update_outline_config_d.py
+    python update_outline_config_d.py   # đừng
 """
 import shutil
 import sys
@@ -17,13 +19,15 @@ BAK = BASE / "Outline Project - Hỏi đáp trên ảnh tài liệu (Document VQ
 sys.stdout.reconfigure(encoding="utf-8")
 
 NEW = (
-    "CHƯA DỰNG — probe khả thi zero-shot cho kết luận âm.\n"
+    "ĐÃ CHẠY — zero-shot kết luận âm; probe tuyến tính kết luận dương.\n"
     "Qwen2.5-VL-3B zero-shot, 120 câu visual_bold_lookup (dev, Colab T4):\n"
     "ANLS 0,555 · EvF1 0,704 · điểm 0,578 vs Cấu hình B 0,818 (chênh −0,241).\n"
     "Chọn đúng hàng 60/120 = đúng mức đoán bừa; không trả lời được A/B: 0/120.\n"
     "Thang sanity 4 bậc: model chép đúng chữ hai dải nhưng chọn theo VỊ TRÍ\n"
     "(đảo dải → chữ không lật; đổi nhãn → chữ không lật) ⇒ lỗi ở tầng so sánh.\n"
-    "⇒ Zero-shot vô dụng. QLoRA là đường duy nhất còn lại, chờ TA xác nhận."
+    "Probe tuyến tính trên feature ViT đóng băng: 100,0% trên 120 câu dev\n"
+    "(đối chứng đo độ dày nét, cùng bộ phân loại: 81,7%).\n"
+    "⇒ Tín hiệu CÓ trong ảnh; nút thắt ở tầng so sánh của VLM. QLoRA không cần thiết."
 )
 
 OLD = "chưa chạy"

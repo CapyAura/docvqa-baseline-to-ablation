@@ -6,7 +6,9 @@ so "đậm" chứ không so "to".
 Kết quả (sau khi sửa lỗi cứng trang 1 — xem probe_bold.py):
     ink/bbox 76,82% · run/h 76,26% · run 80,93% · core/ink 82,99% · core/h 81,50%
 Phép tốt nhất `core/ink` trùng khít con số harness đo được (82,99%) ⇒ không
-phép đo ảnh nào vượt ~84%: đây là trần của tín hiệu ảnh.
+phép đo ảnh nào vượt ~84%. Đó là trần của PHÉP ĐO thủ công, KHÔNG phải của tín
+hiệu ảnh — `probe_linear_bold.py` lấy ra 100,0% tín hiệu đó từ feature ViT đóng
+băng, qua CÙNG bộ phân loại.
 
     python probe_bold2.py
 """
@@ -19,7 +21,10 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-sys.stdout.reconfigure(encoding="utf-8")
+# Colab (ipykernel) gắn stdout vào OutStream không có `reconfigure`; file này
+# được `probe_linear_bold` import trên Colab nên phải guard như `probe_vlm_bold`.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 DATA = Path(__file__).resolve().parents[3] / "data" / "training_set"
 INK = 128

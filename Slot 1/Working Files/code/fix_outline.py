@@ -71,7 +71,8 @@ set_text(find(doc, "Harness đo trần oracle hiện tại"), (
     "eval 99,23%, chênh 0,07 điểm % ⇒ lưới không phụ thuộc tài liệu nào. Phần thiếu 0,83% nằm "
     "trọn ở visual_bold_lookup (82,99%): is_bold là trường duy nhất không có tương ứng trong OCR "
     "(đề bài ghi rõ \"OCR không ghi nhận định dạng chữ\"), và 5 phép đo độ dày nét khác nhau đều "
-    "dừng ở 82,99% ⇒ đây là trần của tín hiệu ảnh, không phải lỗi cài đặt."
+    "dừng ở 82,99% ⇒ đây là trần của PHÉP ĐO thủ công, KHÔNG phải của tín hiệu ảnh "
+"(bộ đọc tuyến tính trên feature ViT đóng băng lấy ra 100% tín hiệu đó), không phải lỗi cài đặt."
 ))
 
 # ------------------------------------------------ 2. Mục VII.4

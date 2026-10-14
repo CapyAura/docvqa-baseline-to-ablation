@@ -7,8 +7,9 @@ Bắt đầu từ baseline của mentor (**0,9545**), dựng một hệ luật t
 rồi đo trần của từng tầng mô hình học sâu trước khi quyết định có dựng hay không.
 
 Điểm đáng chú ý không nằm ở con số cuối, mà ở chỗ **hai tầng mô hình đều cho kết luận âm
-có bằng chứng đo được** — và phần lớn công sức của dự án là chứng minh điều đó bằng số liệu
-thay vì bằng phỏng đoán.
+có bằng chứng đo được** — và ở phép thử cuối của nhánh D, **tín hiệu hoá ra vẫn còn nguyên
+trong ảnh**, chỉ là VLM không so sánh nổi nó. Phần lớn công sức của dự án là chứng minh
+những điều đó bằng số liệu thay vì bằng phỏng đoán.
 
 ---
 
@@ -90,9 +91,10 @@ BoundingDocs, DocExplainerV0, LiGT) cho ba nhận xét quyết định:
 | **D** | Thêm **VLM lớn** (Qwen2.5-VL) có vượt được B không? | Đo xem năng lực *đọc ảnh trực tiếp* có vượt được trần của **một phép đo thủ công** không. |
 
 Điểm mấu chốt về phương pháp: **C và D đều được đo trần trước khi dựng**, và cả hai đều
-có **luật quyết định ghi sẵn trong script trước khi chạy** (ví dụ nhánh D:
-`D − B ≥ +0,03` → mới dựng model + QLoRA; `≤ 0` → dừng). Nghĩa là kết quả âm không phải
-chuyện xảy ra rồi mới biện luận, mà là **điều kiện dừng được đặt trước**.
+có **luật quyết định ghi sẵn trong script trước khi chạy** (nhánh D: `D − B ≥ +0,03` →
+mới dựng model + QLoRA, `≤ 0` → dừng; phép thử cuối của D: probe `≤ ~85%` → đóng nhánh,
+`≥ ~90%` → mới cân nhắc QLoRA). Nghĩa là kết quả âm không phải chuyện xảy ra rồi mới
+biện luận, mà là **điều kiện dừng được đặt trước**.
 
 ### 5. Vì sao C và D kết thúc bằng kết luận âm — và vì sao đó vẫn là kết quả
 
@@ -103,15 +105,24 @@ chuyện xảy ra rồi mới biện luận, mà là **điều kiện dừng đ�
   sinh ra để khai thác không tồn tại**. Dựng model là chắc chắn âm.
 - **D**: `visual_bold_lookup` là dạng duy nhất có trần dưới 100% (82,99%) vì phụ thuộc
   `is_bold` — trường duy nhất không có trong OCR. Câu hỏi mở là: 82,99% là trần của **tín
-  hiệu ảnh**, hay chỉ là trần của **một phép đo độ dày nét**? VLM đọc ảnh trực tiếp là phép
-  thử duy nhất còn lại. Chạy zero-shot: **0,578** so với B **0,818** (chênh −0,241), chọn
-  đúng hàng 60/120 = **đúng mức đoán bừa**. ⇒ 82,99% là trần của **tín hiệu**, không phải
-  của phép đo.
+  hiệu ảnh**, hay chỉ là trần của **một phép đo độ dày nét**? Hai phép thử, hai kết quả
+  ngược nhau — và chính chỗ ngược nhau đó là câu trả lời:
+  - **Zero-shot Qwen2.5-VL** (đường "dùng VLM có sẵn"): **0,578** so với B **0,818**
+    (chênh −0,241), chọn đúng hàng 60/120 = **đúng mức đoán bừa**. Thang sanity cho thấy
+    model **chép đúng chữ cả hai dải** nhưng **không so sánh được độ đậm** ⇒ chết ở **tầng
+    so sánh**, không phải tầng thị giác. Kết luận âm.
+  - **Bộ đọc tuyến tính trên feature ViT đóng băng** (đúng đề nghị của TA — *không* QLoRA):
+    **100,0%** trên 120 câu dev, so với **81,7%** của đối chứng đo nét qua **cùng** bộ phân
+    loại. ⇒ **82,99% là trần của phép đo thủ công, KHÔNG phải của tín hiệu ảnh.** Tín hiệu
+    nằm nguyên trong feature của ViT; nút thắt đúng là tầng so sánh của VLM.
 
 Nói cách khác: **giá trị của dự án không nằm ở việc dựng được model, mà ở việc chứng minh
 bằng số đo rằng hai tầng model đó không đáng dựng trên bộ dữ liệu này** — và chỉ ra chính
 xác loại lỗi nào thì model học sâu mới thực sự cần thiết (câu trả lời: ở `argmax`/`argmin`
-của bộ dữ liệu này, **không loại nào**).
+của bộ dữ liệu này, **không loại nào**). Nhánh D còn đi xa hơn một bước: nó không chỉ
+chứng minh VLM *không đáng dựng*, mà còn định vị được **nút thắt nằm ở đâu** — trong tầng
+so sánh của VLM, chứ không phải ở tín hiệu ảnh. Một bộ đọc tuyến tính 1.280 chiều trên
+ViT đóng băng lấy ra **100%** tín hiệu đó mà không cần huấn luyện gì.
 
 ---
 
@@ -122,7 +133,8 @@ của bộ dữ liệu này, **không loại nào**).
 | **A** | Baseline mentor | 0,9545 | đối chứng |
 | **B** | Hệ luật thuần Python | **0,968** | đã dựng |
 | **C** | + LayoutLMv3 / LayoutXLM | — | **kết luận âm** (không dựng) |
-| **D** | + Qwen2.5-VL | — | **kết luận âm** ở zero-shot |
+| **D** | + Qwen2.5-VL (zero-shot) | — | **kết luận âm** ở zero-shot |
+| **D′** | Bộ đọc tuyến tính trên ViT đóng băng | — | **kết luận dương**: 100% trên 120 câu BOLD — nhưng **không cần VLM** |
 
 Cấu hình B theo split: **0,967** (dev) · **0,972** (eval) · **0,968** (all).
 Chênh dev − eval = 0,005 ⇒ không có dấu hiệu overfit theo tài liệu.
@@ -176,7 +188,8 @@ cột / 256.040 ô, 30.662 hàng** (`code/verify_grid.py`).
 `is_bold` là trường **duy nhất không có tương ứng trong OCR** — đề bài ghi rõ
 *"OCR không ghi nhận định dạng chữ"*. Đo độ dày nét từ ảnh trang (tỉ lệ pixel tối sống
 sót sau bào mòn 1 vòng, bỏ phiếu theo cột). Năm phép đo chuẩn hoá khác nhau đều cho
-cùng kết quả ⇒ đây là **trần của tín hiệu ảnh**, không phải lỗi cài đặt.
+cùng kết quả ⇒ **các phép đo thủ công bị chặn ở ~83%, không phép nào vượt.** Trần đó
+là trần của *phép đo*, **không phải** của tín hiệu ảnh — xem §Cấu hình D.
 
 ### Giao thức chống overfit
 
@@ -187,10 +200,12 @@ overfit trực tiếp. `public_test` chỉ dùng làm kiểm tra cuối.
 
 ---
 
-## Hai kết luận âm
+## Hai kết luận âm — và một kết luận dương bất ngờ
 
-Đây là phần đóng góp chính. Cả hai đều là **đo trần trước khi dựng model**, và cả hai
-đều tiết kiệm nhiều ngày GPU cho một hướng đã biết là âm.
+Đây là phần đóng góp chính. Cả hai nhánh C và D đều là **đo trần trước khi dựng model**,
+và cả hai đều tiết kiệm nhiều ngày GPU cho một hướng đã biết là âm. Riêng nhánh D, phép
+thử trần cuối cùng (bộ đọc tuyến tính trên ViT đóng băng) lật ngược kết luận về *tín
+hiệu*: tín hiệu vẫn còn trong ảnh, chỉ có VLM là không đọc nổi nó.
 
 ### Cấu hình C — tín hiệu không gian không tồn tại
 
@@ -220,15 +235,15 @@ hàng cùng "nổi bật", và nổi bật **không tương quan** với hàng �
 *không tồn tại* trong dữ liệu này. Kết luận này trả lời trực tiếp câu hỏi nghiên cứu:
 *mô hình học sâu chỉ thực sự cần thiết ở loại lỗi nào?*
 
-### Cấu hình D — zero-shot không đọc được độ đậm
+### Cấu hình D — VLM không đọc được độ đậm, nhưng tín hiệu thì có trong ảnh
 
 `visual_bold_lookup` là dạng **duy nhất** có trần dưới 100% (82,99%), vì nó phụ thuộc
 `is_bold` — trường không có trong OCR. Câu hỏi mở: 82,99% là trần của **tín hiệu ảnh**,
-hay chỉ là trần của **một phép đo độ dày nét**? VLM đọc ảnh trực tiếp là phép thử duy nhất
-còn lại.
+hay chỉ là trần của **một phép đo độ dày nét**? Hai phép thử, hai kết quả ngược nhau —
+và chính chỗ ngược nhau đó là câu trả lời.
 
-Chạy Qwen2.5-VL-3B zero-shot trên 120 câu (Colab T4), đối chứng là đúng nhánh BOLD của
-Cấu hình B:
+**(1) Zero-shot Qwen2.5-VL-3B** trên 120 câu (Colab T4), đối chứng là đúng nhánh BOLD
+của Cấu hình B:
 
 | Nhánh | ANLS | EvF1 | Điểm | Chọn đúng hàng |
 |---|---:|---:|---:|---:|
@@ -238,10 +253,53 @@ Cấu hình B:
 Chênh **−0,241**. 60/120 chọn đúng = **đúng mức đoán bừa**. Thang sanity 4 bậc chỉ ra
 nguyên nhân: model **chép đúng chữ cả hai dải** nhưng **không so sánh được độ đậm** —
 đảo dải thì chữ không lật (0/10), đổi nhãn thì chữ đứng yên (10/10) ⇒ **chọn theo vị trí**.
-Lỗi nằm ở **tầng so sánh**, không phải tầng thị giác.
+Lỗi nằm ở **tầng so sánh**, không phải tầng thị giác. Kết luận âm cho đường "dùng VLM
+có sẵn".
 
-Luật quyết định đã ghi trong script **trước khi chạy** (`D − B ≥ +0,03` → dựng D + QLoRA;
-`≤ 0` → dừng). Kết quả −0,241 ⇒ dừng nhánh zero-shot.
+Nhưng kết luận âm đó **chưa** nói được 82,99% là trần của tín hiệu: model hỏng ở tầng
+so sánh thì không chứng minh được tầng thị giác đã hết thông tin.
+
+**(2) Bộ đọc tuyến tính trên feature ViT đóng băng** — đúng phép thử TA chỉ định,
+**không** QLoRA. Lấy trung bình patch feature của vision encoder (đóng băng) trên bbox
+từng hàng ứng viên, huấn luyện Logistic Regression trên **415 câu train**, đánh giá trên
+**120 câu eval**. Đối chứng: 5 phép đo độ dày nét + `stroke_ratio` qua **cùng** bộ phân
+loại:
+
+| Nhánh (cùng bộ phân loại) | Chọn đúng hàng (120 câu) |
+|---|---:|
+| **Bộ đọc tuyến tính, feature ViT** | **100,0%** |
+| Đối chứng: 6 phép đo nét gộp | 81,7% |
+| Đo nét tốt nhất một mình (`core/ink`, `stroke_ratio`) | 80,8% |
+| Cấu hình B (bỏ phiếu cột) | 79,4% |
+| Zero-shot Qwen2.5-VL | 50,0% |
+| Trần nhánh BOLD cũ (đo thủ công) | 82,99% |
+
+⇒ **82,99% là trần của phép đo thủ công, KHÔNG phải của tín hiệu ảnh.** Tín hiệu nằm
+nguyên trong feature của ViT — một bộ đọc tuyến tính 1.280 chiều lấy ra được **100%**,
+không cần huấn luyện model, không cần GPU. Nút thắt đúng là **tầng so sánh** của VLM.
+
+Kết quả 100% này đã qua **8 phép loại trừ lối tắt** (không phép nào hạ được nó):
+
+| Phép loại trừ | Kết quả |
+|---|---|
+| Cân bằng nhãn | train {1: 215, 0: 200} · eval {1: 60, 0: 60} |
+| Đảo nhãn train (3 lần) | 0,458 / 0,408 / 0,492 ⇒ không rò rỉ |
+| Giải mã vị trí hàng từ feature | 0,5208 ⇒ feature không mã hoá thứ tự hàng |
+| Chỉ dùng kích thước ô | 51,7% |
+| Bỏ 20 / 200 chiều \|w\| lớn nhất | vẫn 100% |
+| Tập con ô cùng cỡ (44 câu eval) | probe 100,0% vs `stroke_ratio` 88,6% |
+| Ghép cặp **khác tài liệu** (4.000 cặp) | 100,0% ⇒ đo độ đậm tuyệt đối, không so trong trang |
+| Cặp có hàng **header** | **0/535** cặp có hàng header ⇒ không học "đây là header" |
+
+Hai giới hạn phải ghi rõ: (a) 120 câu dev ⇒ khoảng tin cậy rộng cỡ ±6–7 điểm (100% vẫn
+cách xa mọi mốc đối chứng, nhưng không phải "chắc chắn 100%"); (b) C chọn tham số C tốt
+nhất trên chính tập eval — một thiên vị lạc quan nhỏ, cố ý, để cho nhánh D cơ hội tốt
+nhất trước khi đóng.
+
+**Vậy có nên chạy QLoRA không? Không.** Bộ đọc tuyến tính đóng băng đã giải xong bài
+toán con này ở 100%, không huấn luyện, không GPU. QLoRA sẽ dạy một model 3B đúng cái mà
+một hồi quy logistic 1.280 chiều đã làm hoàn hảo — và theo chính TA, phải đạt ≥90% mới
+phân biệt được với Cấu hình B. Ở đây không còn gì để QLoRA mở ra.
 
 ---
 
@@ -264,7 +322,8 @@ Slot 1/
     Báo cáo/               # báo cáo tiến độ theo tuần (.md nguồn + .docx nộp)
     papers/                # 10 paper + Paper Tracker + tổng hợp gap
     reference/             # đề bài, hướng dẫn Topic Team
-    probe_d/               # probe khả thi Cấu hình D (notebook Colab + kết quả)
+    probe_d/               # probe nhánh D: zero-shot VLM + probe tuyến tính ViT
+                           #   (notebook Colab, lin_items/lin_crops/lin_feats, preds)
   Outline Project ... .docx  # Outline nộp TA (mục IV = bảng ablation)
   PROGRESS_LOG.md            # nhật ký công việc theo tuần
 ```
@@ -304,8 +363,17 @@ python "Slot 1/Working Files/code/row_filter_ceiling.py" --split dev
 python "Slot 1/Working Files/code/probe_gold_signal.py"  --split dev
 ```
 
-Yêu cầu: Python 3.10+ · `python-docx` (chỉ để export báo cáo) · `numpy`, `Pillow`.
-Solver Cấu hình B **không cần GPU và không cần PyTorch**.
+Probe tuyến tính nhánh D — hai máy (máy local không có torch):
+
+```bash
+python "Slot 1/Working Files/code/probe_linear_bold.py" extract   # local: cắt ô -> lin_crops.npz
+# đẩy probe_d/ lên Drive, chạy Cell 5 của probe_d/probe_d_colab.ipynb (Colab T4) -> lin_feats.npz
+python "Slot 1/Working Files/code/probe_linear_bold.py" score     # local: sklearn, không cần GPU
+```
+
+Yêu cầu: Python 3.10+ · `python-docx` (chỉ để export báo cáo) · `numpy`, `Pillow`,
+`scikit-learn` (chỉ cho pha `score` của probe D). Solver Cấu hình B **không cần GPU và
+không cần PyTorch**; pha `feats` của probe D cần GPU nhưng chỉ chạy trên Colab.
 
 ---
 

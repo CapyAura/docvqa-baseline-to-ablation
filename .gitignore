@@ -11,6 +11,9 @@ Slot 1/Working Files/reference/*.pdf
 
 # ── Ảnh crop sinh ra khi chạy probe (tái tạo được) ──────────────────────────
 Slot 1/Working Files/probe_d/crops/
+# Tensor trung gian của probe tuyến tính: cắt lại từ crops/, feature lấy lại từ Colab.
+# Giữ lin_items.jsonl (100 KB) — nó ghi đúng tập câu hỏi dùng để đo.
+Slot 1/Working Files/probe_d/*.npz
 
 # ── Bản backup Outline: git đã giữ lịch sử, không cần bản sao 2,2 MB/file ───
 *BACKUP*.docx

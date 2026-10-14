@@ -17,6 +17,10 @@ BAK = BASE / "Outline Project - Hỏi đáp trên ảnh tài liệu (Document VQ
 sys.stdout.reconfigure(encoding="utf-8")
 
 # Cột kết quả mới — mỗi dòng một cấu hình, khớp thứ tự bảng.
+# ponytail: ĐÃ CHẠY XONG 08/10 — KHÔNG chạy lại được nữa. Các chuỗi trong FIXES
+# không còn khớp Outline, nên script sẽ nổ ở assert hoặc ghi đè bản mới bằng bản cũ.
+# Giữ đây làm bản ghi lịch sử.
+
 RESULTS = [
     "95,45 (mốc so sánh của TA)",
     "0,968 all · 0,967 dev · 0,972 eval\n"
@@ -26,7 +30,10 @@ RESULTS = [
     "4 họ luật không-cần-nhãn đều thất bại; tín hiệu thị giác tốt nhất chỉ trỏ\n"
     "đúng hàng vàng 9,1% trong 197 câu B sai. Hình học hàng đồng nhất tuyệt đối.\n"
     "⇒ Cấu hình B giữ nguyên, không đổi một dòng code nào.",
-    "chưa chạy",
+    "ĐÃ CHẠY — zero-shot kết luận âm; probe tuyến tính kết luận dương.\n"
+    "Qwen2.5-VL-3B zero-shot 120 câu BOLD: 0,578 (B: 0,818), chọn hàng 60/120 = đoán bừa.\n"
+    "Probe tuyến tính trên feature ViT đóng băng: 100,0% (đối chứng đo nét 81,7%).\n"
+    "⇒ Tín hiệu CÓ trong ảnh; nút thắt ở tầng so sánh của VLM. QLoRA không cần thiết.",
 ]
 
 # 3 dòng số liệu cũ ở §III, nay là số của Cấu hình B (all) — ghi kèm số cũ.
@@ -39,8 +46,8 @@ FIXES = {
         "Dư địa còn lại là oracle-only — xem §IV, Cấu hình C.",
     "Visual Bold Lookup (535 câu): Đạt 93.59 điểm → Đóng góp 6.9% tổng số câu sai.":
         "Visual Bold Lookup (535 câu): 93,59 điểm (baseline TA) → 83,1 điểm (Cấu hình B). "
-        "Trần tín hiệu ảnh 82,99% — đây là dư địa thật còn lại của hệ thống, "
-        "hướng cho Cấu hình D.",
+        "Trần phép đo thủ công 82,99% — KHÔNG phải trần của tín hiệu ảnh: probe tuyến "
+        "tính trên feature ViT đạt 100,0% (Cấu hình D).",
 }
 
 
