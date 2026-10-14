@@ -59,7 +59,14 @@ def shade(cell, hex_fill):
 # ---------------------------------------------------------------- md -> docx
 
 def split_row(line):
-    return [c.strip() for c in line.strip().strip("|").split("|")]
+    # ponytail: split on unescaped pipes only; \| inside a cell is a literal pipe
+    # (md escaping), so it must survive as cell text, not break the row.
+    s = line.strip()
+    if s.startswith("|"):
+        s = s[1:]
+    if s.endswith("|") and not s.endswith("\\|"):
+        s = s[:-1]
+    return [c.strip().replace("\\|", "|") for c in re.split(r"(?<!\\)\|", s)]
 
 
 def is_sep(line):

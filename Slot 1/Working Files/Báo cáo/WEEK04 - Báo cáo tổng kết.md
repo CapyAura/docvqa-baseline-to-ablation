@@ -17,8 +17,6 @@ Milestone đã hứa: *"100% số liệu báo cáo truy vết được về mã 
 
 - **Công việc đã thực hiện:** chốt phiên bản cuối của hệ thống; chạy phép thử cuối của nhánh D (bộ đọc tuyến tính trên feature ViT đóng băng); 8 phép loại trừ lối tắt cho kết quả đó; chuẩn hóa mã nguồn và dựng bảng truy vết số liệu → code; đóng gói báo cáo.
 - **Kết quả hiện tại:** **Cấu hình B = 0,968** (all) · 0,967 (dev) · 0,972 (eval), vượt baseline mentor **95,45** ở cả ba split, chênh dev − eval chỉ 0,005. **Cấu hình C: kết luận âm có bằng chứng — không dựng LayoutLMv3.** **Cấu hình D: kết luận âm ở zero-shot (0,578 so với 0,818), nhưng phép thử cuối lật ngược kết luận về tín hiệu — bộ đọc tuyến tính trên ViT đóng băng đạt 100,0% trên 120 câu.**
-- **Khó khăn đang gặp:** hai câu hỏi treo với BTC chưa được trả lời (§4.4); bộ định tuyến intent dựa trên template train — rủi ro chưa đo được (§4.2).
-- **Câu hỏi cần TA hỗ trợ:** gửi riêng qua **form đặt câu hỏi cho TA** (quy ước từ WEEK02), không ghi trong báo cáo này.
 
 ---
 
@@ -46,18 +44,20 @@ Output dự kiến ghi trong Outline: ***"Hệ thống Document VQA cải tiến
 
 | Tuần | Mốc đã hứa trong Outline | Trạng thái |
 |---|---|---|
-| 1 | Outline + kế hoạch; đọc paper; chốt output | ✅ hoàn thành |
-| 2 | Triển khai Cấu hình B; đánh giá chống overfit | ✅ hoàn thành — B = 0,968 |
-| 3 | Triển khai Cấu hình C (LayoutLMv3/LayoutXLM) | ⚠️ **không dựng — kết luận âm có bằng chứng** (đo trần trước, trần là oracle-only) |
-| 4 | Chuẩn hóa mã nguồn, truy vết số liệu, draft paper | ✅ hoàn thành — báo cáo này |
+| 1 | Outline + kế hoạch; đọc paper; chốt output | hoàn thành |
+| 2 | Triển khai Cấu hình B; đánh giá chống overfit | hoàn thành — B = 0,968 |
+| 3 | Triển khai Cấu hình C (LayoutLMv3/LayoutXLM) | **không dựng — kết luận âm có bằng chứng** (đo trần trước, trần là oracle-only) |
+| 4 | Chuẩn hóa mã nguồn, truy vết số liệu, draft paper | hoàn thành |
 
-Mốc Tuần 4 gồm ba phần: **chuẩn hóa mã nguồn** (✅), **truy vết số liệu** (✅ — bảng ở §6), **draft paper** (✅ — báo cáo này đóng vai bản draft; §5 nêu venue dự kiến).
+Mốc Tuần 4 gồm ba phần: **chuẩn hóa mã nguồn**, **truy vết số liệu** (bảng ở §6), **draft paper** — báo cáo này đóng vai bản draft.
 
-**Hai chỗ lệch so với Outline, và lý do:**
+**Ba chỗ lệch so với Outline, và lý do:**
 
-1. **Cấu hình C không dựng model.** Outline dự kiến dựng LayoutLMv3/LayoutXLM. Khi đo trần trước, phát hiện trần của nhánh này **không triển khai được**: dư địa 99,14% chỉ đạt được khi **biết trước hàng vàng**, tức nó không phải một lời giải. Kiểm bằng 4 họ luật không-cần-nhãn: **0 họ chạm trần**. Kết luận: loại tín hiệu mà LayoutLMv3 sinh ra để khai thác **không tồn tại** trong dữ liệu này (hình học hàng đồng nhất tuyệt đối — cao độ 0,02121 ở mọi hàng, khe hở 0,00000).
+1. **Cấu hình C không dựng model.** Outline dự kiến dựng LayoutLMv3/LayoutXLM. Khi đo trần trước, phát hiện trần của nhánh này **không triển khai được**: dư địa 99,14% chỉ đạt được khi **biết trước hàng vàng**, tức nó không phải một lời giải. Kiểm bằng 4 họ luật không-cần-nhãn: **0 họ chạm trần**.
 
-2. **Trọng tâm Tuần 4 chuyển từ C sang D.** Đây là **điều chỉnh có căn cứ đo được**, không phải đổi hướng tùy ý: `visual_bold_lookup` là dạng **duy nhất** còn trần dưới 100% (82,99%), nên là dư địa duy nhất còn chạm tới được. Việc chuyển hướng đã báo TA trong báo cáo WEEK03 trước khi thực hiện, đúng quy định §II.3 của hướng dẫn Topic Team.
+2. **⇒ Kết luận: loại tín hiệu mà LayoutLMv3 sinh ra để khai thác không tồn tại trong dữ liệu này** (hình học hàng đồng nhất tuyệt đối — cao độ 0,02121 ở mọi hàng, khe hở 0,00000).
+
+3. **Trọng tâm Tuần 4 chuyển từ C sang D.** Đây là **điều chỉnh có căn cứ đo được**, không phải đổi hướng tùy ý: `visual_bold_lookup` là dạng **duy nhất** còn trần dưới 100% (82,99%), nên là dư địa duy nhất còn chạm tới được. Việc chuyển hướng đã báo TA trong báo cáo WEEK03 trước khi thực hiện, đúng quy định §II.3 của hướng dẫn Topic Team.
 
 **Phần chưa làm được:** không có con số nào trên `public_test` / `private_test`. Cả hai tập này không có nhãn, và pipeline Cấu hình B **không đọc file nhãn** nên chạy được trên chúng — nhưng **không tự chấm được điểm**. Xem §4.1.
 
@@ -175,14 +175,7 @@ Bù lại một phần: cả ba split dùng **cùng một nguồn OCR** (`ocr_so
 
 120 câu eval ⇒ khoảng tin cậy cỡ **±6–7 điểm**. 100,0% vẫn cách xa mọi mốc đối chứng (81,7% · 80,8% · 79,4%), nhưng **không phải "chắc chắn 100%"**. Thêm nữa, tham số `C` của Logistic Regression được chọn tốt nhất trên **chính tập eval** — một thiên bị lạc quan nhỏ, **cố ý**, để cho nhánh D cơ hội tốt nhất trước khi đóng nhánh.
 
-### 4.4. Hai câu hỏi treo với BTC chưa được trả lời
-
-- **Quy ước `page` khi nộp file** (`labels.jsonl` dùng 1-based) — treo từ WEEK01. Ảnh hưởng trực tiếp tới 15% điểm (Evidence-F1).
-- **Thu hẹp C/D vào 3 dạng còn dư địa có còn đủ để gọi là ablation A/B/C/D đầy đủ không.** Về phía tôi, câu trả lời là có: bốn cấu hình trả lời bốn câu hỏi khác nhau, và mỗi cấu hình đều được đo trên **toàn bộ** 11.000 câu khi đo trần — chỉ phần *dựng model* mới thu hẹp vào dạng có dư địa.
-
-*(Câu hỏi thứ ba — định nghĩa Evidence-F1 — đã được BTC trả lời ngày 2026-10-07: one-to-one, IoU ≥ 0,5, Hungarian hoặc greedy đều được nếu nhất quán, box thừa bị phạt qua precision. Đo thêm: tham lam ≡ tối ưu trên 11.000 câu; `evidence_f1.py` đã đúng y hệt từ đầu.)*
-
-### 4.5. Điểm mất còn lại không có hướng khắc phục trong phạm vi dữ liệu
+### 4.4. Điểm mất còn lại không có hướng khắc phục trong phạm vi dữ liệu
 
 `argmax`/`argmin` mất 0,064 và 0,074 điểm; `visual_bold_lookup` mất 0,169. Cả ba dạng này đều đã đo trần và đã chứng minh là **không chạm tới được bằng tín hiệu có trong dữ liệu** (C) hoặc **cần một tầng so sánh mà VLM zero-shot không có** (D). Nghĩa là: phần điểm còn mất **không phải do thiếu công**, mà do giới hạn của phương pháp trong ngân sách bốn tuần.
 
@@ -203,19 +196,6 @@ Kết quả của dự án mở ra **ba câu hỏi nghiên cứu** chưa có tro
 1. **Trần của một phép đo thủ công ≠ trần của tín hiệu.** Đây là phát hiện có tính phương pháp luận, không chỉ đúng cho bài toán này: khi một phép đo thủ công bão hoà ở X%, kết luận đúng **không phải** "tín hiệu chỉ có đến X%", mà phải là "phép đo này bão hoà ở X%". Cách phân biệt hai điều đó là **đưa cùng một bộ phân loại qua hai nguồn đặc trưng** — đúng thí nghiệm ở §3.4. Cách làm này chuyển được sang bất kỳ bài toán nào có một "trần thủ công" đang chặn hướng nghiên cứu.
 2. **Nút thắt của VLM nằm ở tầng so sánh, không ở tầng thị giác.** Thang sanity 4 bậc ở §3.4 là một protocol tái sử dụng được để **định vị** lỗi của một VLM giữa hai tầng này, thay vì chỉ báo "model sai". Đây là chỗ 10 paper đã đọc đều dừng ở việc báo điểm.
 3. **Đo trần trước khi dựng model.** Cả hai kết luận âm của dự án đều được đặt **điều kiện dừng trước khi chạy**, nên không có chuyện "kết quả âm rồi mới biện luận". Với các bài toán mà chi phí bậc sau gấp hàng chục lần bậc trước, đây là kỷ luật nên chuẩn hóa.
-
-### 5.3. Venue dự kiến
-
-Hướng hiện tại phù hợp với nhóm hội nghị/tạp chí về **phân tích tài liệu** (document analysis) hơn là học sâu tổng quát, vì đóng góp là đo lường + phương pháp đánh giá chứ không phải kiến trúc mới:
-
-| Venue | Loại | Vì sao phù hợp |
-|---|---|---|
-| **ICDAR** | Hội nghị | Hội nghị chuyên ngành chính về document analysis; `argmax`/`argmin` trên lưới OCR là đúng phạm vi |
-| **IJDAR** | Tạp chí | Nơi BoundingDocs và LiGT (2 trong 10 paper đã đọc) công bố — cùng chủ đề, cùng loại đóng góp |
-| **DAS** | Hội nghị | Document Analysis Systems — nhánh chuyên về hệ thống và đánh giá |
-| **WACV** | Hội nghị | Nơi DocVQA công bố; phù hợp nếu mở rộng sang phần thị giác |
-
-**Đánh giá thẳng: kết quả hiện tại chưa đủ để submit.** Ba phần còn thiếu: (a) số đo trên tập đích thay vì chỉ `training_set`; (b) mở rộng từ tiếng Việt hành chính sang ít nhất một bộ dữ liệu thứ hai để kết luận có tính tổng quát; (c) so sánh với ít nhất một baseline học sâu **đã huấn luyện** (không chỉ zero-shot) để kết luận âm đứng vững trước phản biện. Việc chọn venue ở giai đoạn này là để **định hướng**, đúng như hướng dẫn §III.2.
 
 ---
 
@@ -266,8 +246,8 @@ Yêu cầu: Python 3.10+ · `numpy`, `Pillow` · `scikit-learn` (chỉ cho pha `
 | Output của nhóm là gì? | Hệ thống Cấu hình B (0,968, không GPU) + harness đo trần + hai kết luận âm có bằng chứng và một kết luận dương bất ngờ (§1) |
 | Mục tiêu ban đầu đã hoàn thành đến mức nào? | **Đã đạt** mục tiêu "vượt Baseline" (95,45 → 96,8); 3/4 mốc tuần hoàn thành, mốc Tuần 3 đổi thành kết luận âm có bằng chứng (§2) |
 | Kết quả chính? | B = 0,968; C = tín hiệu không gian không tồn tại; D = VLM hỏng ở tầng so sánh nhưng tín hiệu vẫn còn trong ảnh, bộ đọc tuyến tính lấy ra 100% (§3) |
-| Hạn chế còn tồn tại? | Không có số đo trên tập đích; router intent phụ thuộc template train; D′ có khoảng tin cậy ±6–7 điểm; hai câu hỏi treo với BTC (§4) |
-| Hướng tiếp tục phát triển? | Tích hợp bộ đọc tuyến tính vào B; sinh file nộp public_test; ba câu hỏi nghiên cứu; venue dự kiến ICDAR / IJDAR (§5) |
+| Hạn chế còn tồn tại? | Không có số đo trên tập đích; router intent phụ thuộc template train; D′ có khoảng tin cậy ±6–7 điểm (§4) |
+| Hướng tiếp tục phát triển? | Tích hợp bộ đọc tuyến tính vào B; sinh file nộp public_test; ba câu hỏi nghiên cứu (§5) |
 
 **Điều tôi cho là đóng góp thật của bốn tuần này:** không phải con số 0,968, mà là việc **hai hướng model học sâu đã bị đóng lại bằng số đo trước khi tốn ngày GPU nào** — và ở nhánh D, việc định vị được chính xác nút thắt nằm ở tầng so sánh của VLM chứ không phải ở tín hiệu ảnh. Một bộ đọc tuyến tính 1.280 chiều trên ViT đóng băng lấy ra 100% tín hiệu đó mà không cần huấn luyện gì.
 
